@@ -1,16 +1,28 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from dotenv import load_dotenv
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    load_dotenv()
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",
+        google_api_key=gemini_api_key,
+        temperature=0.5
+    )
+
+    response=llm.invoke([{
+        "role": "user",
+        "content": "Hi there, how are you?"
+    }])
+
+    print(response)
+
+    # print("Hi, I am Albert, how can I help you today?")
+    # while True:
+    #     user_input = input("You: ")
+    #     if user_input.lower() == "exit":
+    #         break
+    #     print(f"Cool, thanks for sharing that { user_input}")
