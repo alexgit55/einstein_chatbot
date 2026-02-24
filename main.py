@@ -1,5 +1,9 @@
 from dotenv import load_dotenv
 import os
+
+from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 
@@ -25,6 +29,14 @@ if __name__ == "__main__":
         temperature=0.5
     )
 
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", system_prompt),
+        (MessagesPlaceholder(variable_name="history")),
+        ("user", "{input}")]
+    )
+
+    chain = prompt | llm | StrOutputParser()
+
     print("Hi, I am Albert, how can I help you today?")
     history = []
 
@@ -32,9 +44,7 @@ if __name__ == "__main__":
         user_input = input("You: ")
         if user_input.lower() == "exit":
             break
-        history.append({"role": "user", "content": user_input})
-        response = llm.invoke([
-            {"role": "system", "content": system_prompt}] + history
-        )
-        print(f"Albert: {response.content}")
-        history.append({"role": "assistant", "content": response.content})
+        response = chain.invoke({"input": user_input, "history": history})
+        print(f"Albert: {response}")
+        history.append(HumanMessage(content=user_input))
+        history.append(AIMessage(content=response))
