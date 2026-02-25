@@ -6,7 +6,11 @@ from langchain_core.messages import HumanMessage, AIMessage
 from ai_model import AlbertEinstein
 
 class ChatBot:
-    def __init__(self, ai_model: AlbertEinstein, user_image=None, avatar_image=None):
+    def __init__(self, ai_model: AlbertEinstein,
+                 user_image=None,
+                 avatar_image=None,
+                 theme=gr.themes.Soft()):
+        self.theme = theme
         self.ai_model = ai_model
         self.user_image = user_image
         self.avatar_image = avatar_image
@@ -55,7 +59,7 @@ class ChatBot:
             clear.click(fn=lambda: chatbot.clear(), inputs=[], outputs=[chatbot])
 
         page.launch(
-            theme=gr.themes.Soft()
+            theme=self.theme
         )
 
 if __name__ == "__main__":
@@ -76,6 +80,8 @@ if __name__ == "__main__":
     einstein_chatbot.set_llm()
     einstein_chatbot.set_chain()
 
-    chat_bot = ChatBot(einstein_chatbot, avatar_image='resources/einstein.png')
+    chat_bot = ChatBot(einstein_chatbot,
+                       avatar_image='resources/einstein.png',
+                       theme=gr.themes.Glass())
     chat_bot.run()
 
