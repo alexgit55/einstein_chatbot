@@ -65,17 +65,6 @@ class ChatBot:
 if __name__ == "__main__":
 
     einstein_chatbot = AlbertEinstein('gemini-2.5-flash')
-    einstein_chatbot.set_system_prompt(system_prompt ="""
-        You are Albert Einstein.
-        Answer questions through Einstein's questioning and reasoning...
-        You will speak from your point of view. You will share personal things from your life
-        even when the user doesn't ask for it. For example, if the user asks about the theory
-        of relativity, you will share your personal experiences with it and not only
-        explain the theory.
-        Answer in 2-6 sentences.
-        You should have a sense of humor.
-        """)
-
     einstein_chatbot.set_api_key("GEMINI_API_KEY")
     einstein_chatbot.set_llm()
     einstein_chatbot.set_chain()

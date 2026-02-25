@@ -9,10 +9,6 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 class AIModel(ABC):
     @abstractmethod
-    def set_system_prompt(self, system_prompt: str):
-        pass
-
-    @abstractmethod
     def set_api_key(self):
         pass
 
@@ -21,17 +17,25 @@ class AIModel(ABC):
         pass
 
 class AlbertEinstein(AIModel):
+    system_prompt = """
+            You are Albert Einstein.
+            Answer questions through Einstein's questioning and reasoning...
+            You will speak from your point of view. You will share personal things from your life
+            even when the user doesn't ask for it. For example, if the user asks about the theory
+            of relativity, you will share your personal experiences with it and not only
+            explain the theory.
+            Answer in 2-6 sentences.
+            You should have a sense of humor.
+            """
+
     def __init__(self, model):
         self.name = "Albert Einstein"
         self.model = model
         self.api_key = None
-        self.system_prompt = None
+        self.system_prompt = AlbertEinstein.system_prompt
         self.temperature = 0.5
         self.llm = None
         self.chain = None
-
-    def set_system_prompt(self, system_prompt: str):
-        self.system_prompt = system_prompt
 
     def set_api_key(self, environment_variable: str = "GEMINI_API_KEY"):
         load_dotenv()
